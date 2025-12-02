@@ -1,7 +1,6 @@
 public class Tree {
 
     public static void main(String[] args) {
-
         try {
             if (args.length == 0) {
                 throw new IllegalArgumentException("You must provide the tree length as an argument.");
@@ -28,28 +27,36 @@ public class Tree {
             return;
         }
 
-        // Number of layers before the bottom root
-        int layers = (length - 1) / 2;
-
-        int stars = 1;
-        int indent = layers;
-
-        // Print top root
-        System.out.println(" ".repeat(indent) + "*");
-
-        stars = 3;
-        indent--;
-
-        // Each “layer” prints 2 identical rows
-        for (int i = 0; i < layers; i++) {
-            for (int j = 0; j < 2; j++) {
-                System.out.println(" ".repeat(indent) + "*".repeat(stars));
-            }
-            stars += 2;
-            indent--;
+        // Compute the maximum width of the tree
+        int maxStars = 1; // start with top root width
+        for (int i = 3; i <= length; i += 2) {
+            maxStars += 2; // each body section adds 2 stars
         }
 
-        // Print bottom root
-        System.out.println(" ".repeat(indent + 1) + "*");
+        // top root, centered
+        System.out.println(" ".repeat(maxStars / 2) + "*");
+
+        int stars = 3;   // initial width for first body section
+
+        // print body sections
+        for (int i = 3; i <= length; i += 2) {
+            for (int j = 0; j < 2; j++) { // print each section twice
+                int indent = (maxStars - stars) / 2; // center each line
+                
+                // Print all stars except the last one
+                if (stars > 1) {
+                    System.out.print(" ".repeat(indent));
+                    System.out.print("*".repeat(stars - 1));
+                    // Print the last star in the middle
+                    System.out.println("*");
+                } else {
+                    System.out.println(" ".repeat(indent) + "*");
+                }
+            }
+            stars += 2;
+        }
+
+        // bottom root, centered
+        System.out.println(" ".repeat(maxStars / 2) + "*");
     }
 }
